@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+dependency-injector
+langchain
+langchain-community
+langchain-openai
+langgraph
+pandas
+streamlit
+duckdb
+sqlite-utils
+SQLAlchemy
