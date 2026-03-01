@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    image: agentic-risk-api:latest
+    container_name: agentic-risk-api
+    ports:
+      - "8000:8000"
+    environment:
+      # If running Ollama locally on the host machine, you typically use host.docker.internal
+      # Adjust this if your LLM is hosted elsewhere (e.g. OpenAI API).
+      - LLM_BASE_URL=${LLM_BASE_URL:-http://host.docker.internal:11434/v1}
+      - LLM_MODEL_NAME=${LLM_MODEL_NAME:-llama3.1}
+      - DB_PATH=/app/data/risk.db
+    volumes:
+      - ./data:/app/data
+    command: bash -c "mkdir -p /app/data && python -m src.data.generator --db_path /app/data/risk.db && uvicorn src.api.app:app --host 0.0.0.0 --port 8000"
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    image: agentic-risk-frontend:latest
+    container_name: agentic-risk-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      # Streamlit runs server-side Python, so it connects to the API via the internal Docker network.
+      - API_URL=${FRONTEND_API_URL:-http://api:8000/query}
+    command: streamlit run src/frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    depends_on:
+      - api
+    restart: unless-stopped

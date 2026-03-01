@@ -38,7 +38,6 @@ app.container.wire(modules=[__name__])
 @app.post("/query", response_model=QueryResponse)
 @inject
 def handle_query(request: QueryRequest, workflow: IAgentWorkflow = Depends(Provide[Container.workflow])):
-    workflow = container.workflow()
     """Processes a natural language query through the agent workflow."""
     if not request.query:
         raise HTTPException(status_code=400, detail="Query cannot be empty.")

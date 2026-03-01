@@ -2,8 +2,9 @@ import streamlit as st
 import requests
 import pandas as pd
 import json
+import os
 
-API_URL = "http://localhost:8000/query"
+API_URL = os.environ.get("API_URL", "http://localhost:8000/query")
 
 st.set_page_config(page_title="Agentic Risk Dashboard", layout="wide")
 
