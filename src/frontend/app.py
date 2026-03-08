@@ -83,6 +83,9 @@ if prompt := st.chat_input("Ask a question about your risk or trades..."):
     with st.spinner("Agents are analyzing your request..."):
         try:
             response = requests.post(API_URL, json={"query": prompt})
+            if not response.text:
+                st.error(f"API returned an empty response (status {response.status_code}). Check the API logs.")
+                st.stop()
             response_data = response.json()
 
             error = response_data.get("error")

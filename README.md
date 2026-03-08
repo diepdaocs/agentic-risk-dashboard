@@ -27,23 +27,50 @@ The application is split into two primary services:
 
 ### Prerequisites
 
-- Python 3.9+
+- Python 3.9+ with [uv](https://github.com/astral-sh/uv)
+- [Ollama](https://ollama.com/) for local LLM inference
 - Docker & Docker Compose (optional, for containerized execution)
-- [Ollama](https://ollama.com/) (if running models locally)
 
-### Running Locally
+### 1. Set Up Ollama
 
-To run both the FastAPI backend and Streamlit frontend locally concurrently, you can use the provided bash script:
+Install Ollama and pull the required model:
+
+```bash
+# Install Ollama (Linux/macOS)
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Start the Ollama server (keep this running in a dedicated terminal)
+ollama serve
+
+# Pull the default model (~4GB, one-time download)
+ollama pull llama3.1
+```
+
+The API expects Ollama at `http://localhost:11434`. Override with env vars if needed:
+
+```bash
+export LLM_BASE_URL=http://localhost:11434/v1
+export LLM_MODEL_NAME=llama3.1
+```
+
+### 2. Run Locally
+
+Run each service in a separate terminal:
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+uv sync
 
-# Run the application
-chmod +x run.sh
-./run.sh
+# Generate mock data
+uv run python -m src.data.generator
+
+# Terminal 1 — FastAPI backend
+uv run python -m src.api.app
+
+# Terminal 2 — Streamlit frontend
+uv run streamlit run src/frontend/app.py --server.port 8501 --server.address 0.0.0.0
 ```
-This will start the FastAPI backend and then launch the Streamlit app.
+
 - API is available at: `http://localhost:8000`
 - Frontend is available at: `http://localhost:8501`
 

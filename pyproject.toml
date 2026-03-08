@@ -1,0 +1,21 @@
+[project]
+name = "agentic-risk-dashboard"
+version = "0.1.0"
+description = "AI agent-driven risk dashboard for traders"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "dependency-injector",
+    "langchain",
+    "langchain-community",
+    "langchain-openai",
+    "langgraph",
+    "pandas",
+    "streamlit",
+    "duckdb",
+    "sqlite-utils",
+    "SQLAlchemy",
+]

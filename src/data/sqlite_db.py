@@ -26,11 +26,24 @@ class SQLiteDatabase(IDatabase):
                 tables = cursor.fetchall()
                 for table in tables:
                     table_name = table[0]
-                    schema += f"Table: {table_name}\n"
                     cursor.execute(f"PRAGMA table_info({table_name});")
                     columns = cursor.fetchall()
-                    for col in columns:
-                        schema += f"  - {col[1]} ({col[2]})\n"
+                    col_names = [col[1] for col in columns]
+                    col_defs = ", ".join(f"{col[1]} ({col[2]})" for col in columns)
+                    schema += f"Table: {table_name}\n"
+                    schema += f"  Columns: {col_defs}\n"
+                    cursor.execute(f"SELECT {', '.join(col_names)} FROM {table_name} LIMIT 1;")
+                    row = cursor.fetchone()
+                    if row:
+                        sample = {col_names[i]: row[i] for i in range(len(col_names))}
+                        schema += f"  Sample row: {sample}\n"
+                    schema += "\n"
+                schema += (
+                    "Relationships:\n"
+                    "  trades.trade_id = risk_metrics.trade_id  (JOIN key)\n"
+                    "  Use JOIN when a query needs columns from both tables "
+                    "(e.g. desk/instrument from trades with pnl/dv01/delta/gamma/vega from risk_metrics).\n"
+                )
         except sqlite3.Error as e:
             return f"Error getting schema: {str(e)}"
         return schema
