@@ -1,5 +1,4 @@
 from dependency_injector import containers, providers
-from src.core.interfaces import IDatabase, IAgentWorkflow
 from src.data.sqlite_db import SQLiteDatabase
 from src.agents.workflow import LangGraphWorkflow
 

@@ -1,8 +1,8 @@
-import streamlit as st
-import requests
-import pandas as pd
-import json
 import os
+
+import pandas as pd
+import requests
+import streamlit as st
 
 API_URL = os.environ.get("API_URL", "http://localhost:8000/query")
 

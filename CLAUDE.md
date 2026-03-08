@@ -18,8 +18,18 @@ uv run streamlit run src/frontend/app.py --server.port 8501 --server.address 0.0
 
 ### Testing
 ```bash
-python test_agent.py   # Smoke test: verifies workflow initialization
+uv run python test_agent.py   # Smoke test: verifies workflow initialization (uses OpenAI API, not Ollama)
 ```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `LLM_BASE_URL` | `http://localhost:11434/v1` | Ollama OpenAI-compatible endpoint |
+| `LLM_MODEL_NAME` | `llama3.1` | Model for inference |
+| `DB_PATH` | `risk.db` | SQLite database path |
+| `API_URL` | `http://localhost:8000/query` | Frontend → API endpoint (local) |
+| `FRONTEND_API_URL` | `http://api:8000/query` | Frontend → API endpoint (Docker) |
 
 ### Docker
 ```bash
