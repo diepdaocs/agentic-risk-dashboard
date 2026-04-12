@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Agentic Risk Dashboard API", lifespan=lifespan)
 
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "http://localhost:11434/v1")
-LLM_MODEL_NAME = os.environ.get("LLM_MODEL_NAME", "llama3.1")
+LLM_MODEL_NAME = os.environ.get("LLM_MODEL_NAME", "gemma:2b")
 DB_PATH = os.environ.get("DB_PATH", "risk.db")
 
 # Initialize DI Container
