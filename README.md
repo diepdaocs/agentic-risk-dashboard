@@ -43,14 +43,14 @@ curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 
 # Pull the default model (~4GB, one-time download)
-ollama pull llama3.1
+ollama pull gemma:2b
 ```
 
 The API expects Ollama at `http://localhost:11434`. Override with env vars if needed:
 
 ```bash
 export LLM_BASE_URL=http://localhost:11434/v1
-export LLM_MODEL_NAME=llama3.1
+export LLM_MODEL_NAME='gemma:2b'
 ```
 
 ### 2. Run Locally
